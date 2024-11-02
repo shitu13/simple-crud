@@ -1,0 +1,36 @@
+# Node modules
+**/node_modules/
+
+# Environment variables
+**/.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite/React build output
+frontend/dist/
+frontend/build/
+frontend/.cache/
+frontend/.vite/
+
+# Express/Backend build output
+backend/dist/
+backend/build/
+backend/temp/
+backend/uploads/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional lock files
+package-lock.json
+yarn.lock
+
+# IDE/editor config files (optional)
+.idea/
+.vscode/
