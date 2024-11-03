@@ -21,7 +21,7 @@ app.use('/api', userRoutes);
 
 // Sample route
 app.get('/', (req, res) => {
-  res.send('Disaster Management App API is running');
+  res.send('Simple Crud App API is running');
 });
 
 app.listen(port, () => {
