@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { updateUser, getAllUsers } from '../services/service.js';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditUser = () => {
-  const { id } = useParams(); // Get the user ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState({
     name: '',
@@ -11,7 +13,6 @@ const EditUser = () => {
     phone: '',
     address: ''
   });
-  const [message, setMessage] = useState('');
 
   // Fetch the user details on component mount
   useEffect(() => {
@@ -22,10 +23,10 @@ const EditUser = () => {
         if (existingUser) {
           setUser(existingUser);
         } else {
-          setMessage('User not found');
+          toast.error('User not found');
         }
       } catch (error) {
-        setMessage('Error fetching user data: ' + error.message);
+        toast.error('Error fetching user data: ' + error.message);
       }
     };
 
@@ -35,73 +36,134 @@ const EditUser = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({
-      ...user,
+    setUser(prevUser => ({
+      ...prevUser,
       [name]: value
-    });
+    }));
+  };
+
+  // Validate phone number for numeric characters
+  const isPhoneNumberValid = (phone) => {
+    return /^[0-9]*$/.test(phone);
   };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!isPhoneNumberValid(user.phone)) {
+      toast.error('Phone number must contain only numeric values (0-9)!');
+      return;
+    }
+
     try {
-      await updateUser(id, user); // Call updateUser from service
-      setMessage('User updated successfully!');
-      navigate('/'); // Redirect to user list after updating
+      await updateUser(id, user);
+      toast.success('User updated successfully!');
+      navigate('/');
     } catch (error) {
-      setMessage('Error updating user: ' + error.message);
+      toast.error('Error updating user: ' + error.message);
     }
   };
 
   return (
-    <div>
-      <h2>Edit User</h2>
-      {message && <p>{message}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+    <div style={styles.container}>
+      <ToastContainer />
+      <h2 style={styles.heading}>Edit User</h2>
+      <form onSubmit={handleSubmit} style={styles.form}>
+        <div style={styles.inputGroup}>
           <input
             type="text"
             name="name"
+            placeholder="Name"
             value={user.name}
             onChange={handleChange}
             required
+            style={styles.input}
           />
         </div>
-        <div>
-          <label>Email:</label>
+        <div style={styles.inputGroup}>
           <input
             type="email"
             name="email"
+            placeholder="Email"
             value={user.email}
             onChange={handleChange}
             required
+            readOnly
+            style={{ ...styles.input, backgroundColor: '#f0f0f0', cursor: 'not-allowed' }} 
           />
         </div>
-        <div>
-          <label>Phone:</label>
+        <div style={styles.inputGroup}>
           <input
             type="text"
             name="phone"
+            placeholder="Phone"
             value={user.phone}
             onChange={handleChange}
             required
+            style={styles.input}
           />
         </div>
-        <div>
-          <label>Address:</label>
+        <div style={styles.inputGroup}>
           <input
             type="text"
             name="address"
+            placeholder="Address"
             value={user.address}
             onChange={handleChange}
             required
+            style={styles.input}
           />
         </div>
-        <button type="submit">Update User</button>
+        <button type="submit" style={styles.button}>Update User</button>
       </form>
     </div>
   );
+};
+
+// Styling object for inline styles
+const styles = {
+  container: {
+    maxWidth: '400px',
+    margin: '0 auto',
+    padding: '20px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    backgroundColor: '#f9f9f9'
+  },
+  heading: {
+    textAlign: 'center',
+    color: '#333'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px'
+  },
+  inputGroup: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  input: {
+    padding: '10px',
+    fontSize: '16px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    backgroundColor: '#fff',
+    color: '#333',
+    transition: 'border-color 0.3s',
+  },
+  button: {
+    padding: '12px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: '#007bff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s',
+  },
 };
 
 export default EditUser;

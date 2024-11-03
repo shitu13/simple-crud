@@ -27,10 +27,6 @@ backend/uploads/
 .DS_Store
 Thumbs.db
 
-# Optional lock files
-package-lock.json
-yarn.lock
-
 # IDE/editor config files (optional)
 .idea/
 .vscode/
