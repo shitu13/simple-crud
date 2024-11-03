@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Set base URL for axios
 const api = axios.create({
-  baseURL: "https://simple-crud-backend-qtvn.onrender.com"
+  baseURL: "https://simple-crud-backend-qtvn.onrender.com/api"
 });
 
 // Function to add a new user
