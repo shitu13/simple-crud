@@ -1,6 +1,6 @@
-# Fullstack MERN Project
+# User Management App
 
-This is a Fullstack MERN application. It utilizes MongoDB for the database, Express.js for the backend server, React.js for the frontend, and Node.js for the runtime environment.
+This is a Fullstack MERN application for managing user information. It utilizes MongoDB for the database, Express.js for the backend server, React.js for the frontend, and Node.js for the runtime environment.
 
 ## Table of Contents
 
@@ -11,7 +11,6 @@ This is a Fullstack MERN application. It utilizes MongoDB for the database, Expr
 
 ## Features
 
-- [List out the main features of your application]
 - CRUD operations
 - Responsive design
 
